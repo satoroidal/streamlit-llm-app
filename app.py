@@ -1,10 +1,12 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
 
 load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+print(os.getenv("OPENAI_API_KEY"))
 
 # Webアプリの概要・操作説明
 st.title("専門家アドバイスアプリ")
@@ -32,7 +34,7 @@ user_input = st.text_input("質問や相談内容を入力してください")
 def get_llm_response(user_text, expert_key):
     """入力テキストと専門家種別をもとにLLMから回答を取得"""
     system_prompt = experts[expert_key]
-    chat = ChatOpenAI(temperature=0.7)
+    chat = ChatOpenAI(temperature=0.7, api_key=openai_api_key)
     messages = [
         SystemMessage(content=system_prompt),
         HumanMessage(content=user_text)
